@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DienTuModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="300" />
+    <Property Name="Token" Type="nvarchar" MaxLength="300" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Birthday" Type="char" MaxLength="10" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="Cart">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PurchasedDate" Type="char" MaxLength="22" />
+    <Property Name="Receiver" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Checked" Type="int" />
+    <Property Name="ConfirmedByAdmin" Type="int" />
+    <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="ID_Product" />
+      <PropertyRef Name="ID_Cart" />
+    </Key>
+    <Property Name="ID_Product" Type="int" Nullable="false" />
+    <Property Name="ID_Cart" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+  </EntityType>
+  <EntityType Name="Manufacturer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="ID_Manufacturer" Type="int" />
+    <Property Name="Price" Type="int" />
+    <Property Name="Screen" Type="nvarchar" MaxLength="100" />
+    <Property Name="PrimaryCamera" Type="nvarchar" MaxLength="50" />
+    <Property Name="SecondaryCamera" Type="nvarchar" MaxLength="50" />
+    <Property Name="OS" Type="nvarchar" MaxLength="50" />
+    <Property Name="CPU" Type="nvarchar" MaxLength="100" />
+    <Property Name="GraphicChip" Type="nvarchar" MaxLength="50" />
+    <Property Name="RAM" Type="nvarchar" MaxLength="50" />
+    <Property Name="Storage" Type="nvarchar" MaxLength="50" />
+    <Property Name="SD" Type="nvarchar" MaxLength="50" />
+    <Property Name="SIM" Type="nvarchar" MaxLength="50" />
+    <Property Name="Battery" Type="nvarchar" MaxLength="50" />
+    <Property Name="Comms" Type="nvarchar" MaxLength="80" />
+    <Property Name="Image" Type="varbinary(max)" />
+    <Property Name="IsVisible" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_Cart_Account">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Cart">
+    <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+    <End Role="Item" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cart">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="ID_Cart" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Item" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="ID_Product" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Manufacturer">
+    <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Manufacturer">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ID_Manufacturer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DienTuModelStoreContainer">
+    <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Cart_Account" Association="Self.FK_Cart_Account">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Cart" EntitySet="Cart" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Cart" Association="Self.FK_Item_Cart">
+      <End Role="Cart" EntitySet="Cart" />
+      <End Role="Item" EntitySet="Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Product" Association="Self.FK_Item_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="Item" EntitySet="Item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Manufacturer" Association="Self.FK_Product_Manufacturer">
+      <End Role="Manufacturer" EntitySet="Manufacturer" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

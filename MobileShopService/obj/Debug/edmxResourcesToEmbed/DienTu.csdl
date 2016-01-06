@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DienTuModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Token" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Birthday" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Carts" Relationship="Self.FK_Cart_Account" FromRole="Account" ToRole="Cart" />
+  </EntityType>
+  <EntityType Name="Cart">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchasedDate" Type="String" MaxLength="22" FixedLength="true" Unicode="false" />
+    <Property Name="Receiver" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Checked" Type="Int32" />
+    <Property Name="ConfirmedByAdmin" Type="Int32" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Account" Relationship="Self.FK_Cart_Account" FromRole="Cart" ToRole="Account" />
+    <NavigationProperty Name="Items" Relationship="Self.FK_Item_Cart" FromRole="Cart" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="ID_Product" />
+      <PropertyRef Name="ID_Cart" />
+    </Key>
+    <Property Name="ID_Product" Type="Int32" Nullable="false" />
+    <Property Name="ID_Cart" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <NavigationProperty Name="Cart" Relationship="Self.FK_Item_Cart" FromRole="Item" ToRole="Cart" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Item_Product" FromRole="Item" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Manufacturer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_Manufacturer" FromRole="Manufacturer" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ID_Manufacturer" Type="Int32" />
+    <Property Name="Price" Type="Int32" />
+    <Property Name="Screen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PrimaryCamera" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SecondaryCamera" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="GraphicChip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RAM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Storage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SIM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Battery" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Comms" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="IsVisible" Type="Int32" />
+    <NavigationProperty Name="Items" Relationship="Self.FK_Item_Product" FromRole="Product" ToRole="Item" />
+    <NavigationProperty Name="Manufacturer" Relationship="Self.FK_Product_Manufacturer" FromRole="Product" ToRole="Manufacturer" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Cart_Account">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Cart">
+    <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+    <End Role="Item" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cart">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="ID_Cart" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Item" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="ID_Product" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Manufacturer">
+    <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Manufacturer">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="ID_Manufacturer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DienTuEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="Carts" EntityType="Self.Cart" />
+    <EntitySet Name="Items" EntityType="Self.Item" />
+    <EntitySet Name="Manufacturers" EntityType="Self.Manufacturer" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_Cart_Account" Association="Self.FK_Cart_Account">
+      <End Role="Account" EntitySet="Accounts" />
+      <End Role="Cart" EntitySet="Carts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Cart" Association="Self.FK_Item_Cart">
+      <End Role="Cart" EntitySet="Carts" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_Product" Association="Self.FK_Item_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Manufacturer" Association="Self.FK_Product_Manufacturer">
+      <End Role="Manufacturer" EntitySet="Manufacturers" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
