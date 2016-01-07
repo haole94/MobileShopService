@@ -152,7 +152,7 @@ namespace MobileShopService.Controllers
             if (result == 1)
                 return Request.CreateResponse(HttpStatusCode.OK);
             return Request.CreateResponse(HttpStatusCode.BadRequest);
-        }
+        }*/
 
         [HttpPut]
         [Route("api/account/update")]
@@ -183,6 +183,6 @@ namespace MobileShopService.Controllers
             int result = ctx.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.OK);
-        }*/
+        }
     }
 }
